@@ -130,9 +130,15 @@ const Roadmap = () => {
                 : 'Ensure your book\'s success. Unlock the interactive roadmap (Weeks 8 to 1), enable PDF export, and get immediate access to all Premium resources and templates.'}
             </p>
             <div className="modal-actions">
-              <button className="btn-primary mockup-btn">
+              <a
+                href="https://buy.stripe.com/8x27sMcmHcdu6IZ37R4c802"
+                target="_blank"
+                rel="noreferrer"
+                className="btn-primary mockup-btn"
+                style={{ display: 'inline-block', textAlign: 'center' }}
+              >
                 {lang === 'es' ? 'Desbloquear Paquete Completo por $27' : 'Unlock Full Bundle for $27'}
-              </button>
+              </a>
               <button className="text-button" onClick={() => setShowPaywall(false)}>
                 {lang === 'es' ? 'Quizás más tarde' : 'Maybe later'}
               </button>
