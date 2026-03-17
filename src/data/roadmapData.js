@@ -101,8 +101,8 @@ export const roadmapContent = [
             es: 'En Bookish Alchemy AI Studio creamos tus imágenes, teasers y portadas con IA de altísima calidad.',
             en: 'At Bookish Alchemy AI Studio we create your images, teasers, and covers with high-quality AI.'
           },
-          price: 'Próximamente',
-          link: '#'
+          price: 'Social',
+          link: 'https://www.instagram.com/bookishalchemyai/'
         }
       },
       {

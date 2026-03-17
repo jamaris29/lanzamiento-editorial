@@ -55,7 +55,17 @@ const TaskAccordion = ({ task, isLocked, onPaywallClick }) => {
               </div>
               <h5 className="upsell-title">{task.upsell.title[lang]}</h5>
               <p className="upsell-text">{task.upsell.text[lang]}</p>
-              {task.upsell.price === 'Próximamente' ? (
+              {task.upsell.price === 'Social' ? (
+                <a
+                  href={task.upsell.link}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="btn-primary"
+                  style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
+                >
+                  📸 {lang === 'es' ? 'Encúéntranos en Instagram' : 'Find us on Instagram'}
+                </a>
+              ) : task.upsell.price === 'Próximamente' ? (
                 <button className="btn-primary" disabled style={{ opacity: 0.7, cursor: 'not-allowed' }}>
                    {lang === 'es' ? 'Próximamente' : 'Coming Soon'}
                 </button>
