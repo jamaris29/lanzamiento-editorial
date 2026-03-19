@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { Mail, Sparkles, FileDown, ArrowLeft } from 'lucide-react';
+import { Mail, Sparkles, FileDown, ArrowLeft, Download, Star } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
-import AccessDenied from './AccessDenied';
 import EmailScripts from './EmailScripts';
 
 const ResourcesDashboard = () => {
@@ -10,15 +9,27 @@ const ResourcesDashboard = () => {
   const [showEmailScripts, setShowEmailScripts] = useState(false);
   const navigate = useNavigate();
 
-  if (!isPremium) {
-    return <AccessDenied />;
-  }
-
   if (showEmailScripts) {
     return <EmailScripts onBack={() => setShowEmailScripts(false)} />;
   }
 
-  const resources = [
+  const freeResources = [
+    {
+      id: 'aplus',
+      icon: <Download size={32} />,
+      title: { es: 'Plantillas Amazon A+ Im\u00e1n de Ventas', en: 'Amazon A+ Sales Magnet Templates' },
+      subtitle: { es: 'Descarga gratuita \u00b7 PDF', en: 'Free download \u00b7 PDF' },
+      description: {
+        es: 'Plantillas de dise\u00f1o listas para usar en tu p\u00e1gina de Amazon. Crea contenido A+ que convierta visitantes en compradores en minutos.',
+        en: 'Ready-to-use design templates for your Amazon page. Create A+ content that converts visitors into buyers in minutes.'
+      },
+      btnText: { es: 'Descargar Plantillas PDF', en: 'Download PDF Templates' },
+      isFree: true,
+      action: () => window.open('https://drive.google.com/file/d/1_70itKQn6wKRjXJoWcGit7xc5GyriYtS/view?usp=drive_link', '_blank')
+    }
+  ];
+
+  const premiumResources = [
     {
       id: 'emails',
       icon: <Mail size={32} />,
@@ -37,7 +48,7 @@ const ResourcesDashboard = () => {
       title: { es: 'Prompter Editorial', en: 'Editorial Prompter' },
       subtitle: { es: 'IA Gemini personalizada', en: 'Custom Gemini AI' },
       description: {
-        es: 'Un bot de IA entrenado para generar tu psicografía de lector, tropos principales y estrategia de contenido automáticamente.',
+        es: 'Un bot de IA entrenado para generar tu psicograf\u00eda de lector, tropos principales y estrategia de contenido autom\u00e1ticamente.',
         en: 'An AI bot trained to generate your reader psychographics, main tropes, and content strategy automatically.'
       },
       btnText: { es: 'Abrir Prompter IA', en: 'Open AI Prompter' },
@@ -49,17 +60,11 @@ const ResourcesDashboard = () => {
       title: { es: 'Checklist Imprimible', en: 'Printable Checklist' },
       subtitle: { es: 'Descarga en PDF', en: 'PDF Download' },
       description: {
-        es: 'Tu mapa de 10 semanas en formato PDF listo para imprimir. Márcalo con pluma, pégalo en tu pared y conquista tu lanzamiento.',
+        es: 'Tu mapa de 10 semanas en formato PDF listo para imprimir. M\u00e1rcalo con pluma, p\u00e9galo en tu pared y conquista tu lanzamiento.',
         en: 'Your 10-week roadmap in printable PDF format. Mark it with a pen, stick it on your wall, and conquer your launch.'
       },
       btnText: { es: 'Descargar PDF', en: 'Download PDF' },
-      action: () => {
-        navigate('/');
-        setTimeout(() => {
-          const btn = document.querySelector('.btn-primary[style*="marginTop"]');
-          if (btn) btn.click();
-        }, 500);
-      }
+      action: () => { navigate('/'); setTimeout(() => { const btn = document.querySelector('.roadmap-pdf-btn'); if (btn) btn.click(); }, 500); }
     }
   ];
 
@@ -70,23 +75,61 @@ const ResourcesDashboard = () => {
           <ArrowLeft size={18} />
           {lang === 'es' ? 'Volver al Mapa' : 'Back to Roadmap'}
         </button>
-        <h2>{lang === 'es' ? 'Tu Arsenal Premium' : 'Your Premium Arsenal'}</h2>
+        <h2>{lang === 'es' ? 'Recursos' : 'Resources'}</h2>
         <p className="resources-subtitle">
           {lang === 'es'
-            ? 'Herramientas exclusivas diseñadas para ahorrarte horas y maximizar el impacto de tu lanzamiento.'
-            : 'Exclusive tools designed to save you hours and maximize the impact of your launch.'}
+            ? 'Descarga gratuita y herramientas exclusivas para tu lanzamiento.'
+            : 'Free downloads and exclusive tools for your launch.'}
         </p>
       </div>
 
-      <div className="resource-grid">
-        {resources.map((resource) => (
-          <div key={resource.id} className="resource-card">
+      {/* --- FREE SECTION --- */}
+      <div className="resources-section-title">
+        \uD83C\uDF81 {lang === 'es' ? 'Recursos Gratuitos' : 'Free Resources'}
+      </div>
+      <div className="resource-grid free-resource-grid">
+        {freeResources.map((resource) => (
+          <div key={resource.id} className="resource-card resource-card--free">
+            <div className="free-badge">{lang === 'es' ? 'GRATIS' : 'FREE'}</div>
+            <div className="resource-icon resource-icon--free">{resource.icon}</div>
+            <h3>{resource.title[lang]}</h3>
+            <span className="resource-subtitle">{resource.subtitle[lang]}</span>
+            <p className="resource-description">{resource.description[lang]}</p>
+            <button className="btn-primary resource-btn btn-download" onClick={resource.action}>
+              <Download size={18} />
+              {resource.btnText[lang]}
+            </button>
+          </div>
+        ))}
+      </div>
+
+      {/* --- PREMIUM SECTION --- */}
+      <div className="resources-section-title resources-section-title--premium">
+        \u2B50 {lang === 'es' ? 'Arsenal Premium' : 'Premium Arsenal'}
+      </div>
+      {!isPremium && (
+        <div className="resources-paywall-banner">
+          <Star size={20} />
+          <p>{lang === 'es' ? 'Desbloquea las herramientas Premium por $27' : 'Unlock Premium tools for $27'}</p>
+          <a href="https://buy.stripe.com/8x27sMcmHcdu6IZ37R4c802" target="_blank" rel="noreferrer" className="btn-primary">
+            {lang === 'es' ? 'Desbloquear' : 'Unlock'}
+          </a>
+        </div>
+      )}
+      <div className={`resource-grid ${!isPremium ? 'resource-grid--locked' : ''}`}>
+        {premiumResources.map((resource) => (
+          <div key={resource.id} className={`resource-card ${!isPremium ? 'resource-card--locked' : ''}`}>
             <div className="resource-icon">{resource.icon}</div>
             <h3>{resource.title[lang]}</h3>
             <span className="resource-subtitle">{resource.subtitle[lang]}</span>
             <p className="resource-description">{resource.description[lang]}</p>
-            <button className="btn-primary resource-btn" onClick={resource.action}>
-              {resource.btnText[lang]}
+            <button
+              className="btn-primary resource-btn"
+              onClick={isPremium ? resource.action : undefined}
+              disabled={!isPremium}
+              style={!isPremium ? { opacity: 0.5, cursor: 'not-allowed' } : {}}
+            >
+              {isPremium ? resource.btnText[lang] : (lang === 'es' ? '\uD83D\uDD12 Premium' : '\uD83D\uDD12 Premium')}
             </button>
           </div>
         ))}
